@@ -2293,6 +2293,16 @@ static int sec_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 	ts_dup = ts;
 	ts->probe_done = true;
 
+	/* Try to init now */
+	mutex_lock(&ts->lock);
+	ret = sec_ts_after_init(ts);
+	mutex_unlock(&ts->lock);
+
+	if (ret)
+		schedule_delayed_work(&ts->after_work.start, 1 * HZ);
+	else
+		ts->after_work.done = true;
+
 	input_info(true, &ts->client->dev, "%s: done\n", __func__);
 	input_log_fix();
 
