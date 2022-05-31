@@ -4928,8 +4928,6 @@
 		qcom,vdd-wlan-rfa1-config = <1900000 1900000 0 0 1>;
 		vdd-wlan-rfa2-supply = <&pm8150a_s8>;
 		qcom,vdd-wlan-rfa2-config = <1350000 1350000 0 0 1>;
-		wlan-ant-switch-supply = <&pm8150a_l5>;
-		qcom,wlan-ant-switch-config = <1800000 1800000 0 0 0>;
 
 		mhi,max-channels = <30>;
 		mhi,timeout = <10000>;
