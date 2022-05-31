@@ -4895,7 +4895,6 @@
 		qcom,converged-dt;
 		cnss-daemon-support;
 		qcom,cmd_db_name = "smpf2";
-		use-nv-mac;
 		qcom,set-wlaon-pwr-ctrl;
 		cnss-enable-self-recovery;
 
