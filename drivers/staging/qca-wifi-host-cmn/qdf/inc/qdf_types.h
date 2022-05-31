@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2014-2021 The Linux Foundation. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -384,6 +384,7 @@ typedef bool (*qdf_irqlocked_func_t)(void *);
  * @QDF_MODULE_ID_FTM_TIME_SYNC: FTM Time sync module ID
  * @QDF_MODULE_ID_PKT_CAPTURE: PACKET CAPTURE module ID
  * @QDF_MODULE_ID_MON_FILTER: Monitor filter related config module ID
+ * @QDF_MODULE_ID_GPIO: GPIO configuration module ID
  * @QDF_MODULE_ID_ANY: anything
  * @QDF_MODULE_ID_MAX: Max place holder module ID
  */
@@ -506,6 +507,7 @@ typedef enum {
 	QDF_MODULE_ID_FTM_TIME_SYNC,
 	QDF_MODULE_ID_PKT_CAPTURE,
 	QDF_MODULE_ID_MON_FILTER,
+	QDF_MODULE_ID_GPIO = 123,
 	QDF_MODULE_ID_ANY,
 	QDF_MODULE_ID_MAX,
 } QDF_MODULE_ID;
@@ -1311,7 +1313,10 @@ enum qdf_suspend_type {
  * @QDF_VDEV_STOP_RESPONSE_TIMED_OUT: Stop response timeout from FW
  * @QDF_VDEV_DELETE_RESPONSE_TIMED_OUT: Delete response timeout from FW
  * @QDF_VDEV_PEER_DELETE_ALL_RESPONSE_TIMED_OUT: Peer delete all resp timeout
+ * @QDF_WMI_BUF_SEQUENCE_MISMATCH: WMI Tx completion buffer sequence mismatch
  * @QDF_HAL_REG_WRITE_FAILURE: HAL register writing failures
+ * @QDF_SUSPEND_NO_CREDIT: host lack of credit after suspend
+ * @QCA_HANG_BUS_FAILURE: Bus failure
  */
 enum qdf_hang_reason {
 	QDF_REASON_UNSPECIFIED,
@@ -1334,7 +1339,10 @@ enum qdf_hang_reason {
 	QDF_VDEV_STOP_RESPONSE_TIMED_OUT,
 	QDF_VDEV_DELETE_RESPONSE_TIMED_OUT,
 	QDF_VDEV_PEER_DELETE_ALL_RESPONSE_TIMED_OUT,
+	QDF_WMI_BUF_SEQUENCE_MISMATCH,
 	QDF_HAL_REG_WRITE_FAILURE,
+	QDF_SUSPEND_NO_CREDIT,
+	QCA_HANG_BUS_FAILURE,
 };
 
 /**
