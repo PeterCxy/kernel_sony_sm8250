@@ -2509,6 +2509,7 @@ run_walt_irq_work(u64 old_window_start, struct rq *rq, u64 wallclock)
 			return;
 
 		walt_irq_work_queue(&walt_cpufreq_irq_work);
+		trace_walt_window_rollover(rq->window_start);
 	}
 }
 

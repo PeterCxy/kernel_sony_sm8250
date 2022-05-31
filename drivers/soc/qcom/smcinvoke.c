@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2016-2021, The Linux Foundation. All rights reserved.
  */
 
 #define pr_fmt(fmt) "smcinvoke: %s: " fmt, __func__
@@ -1072,8 +1072,7 @@ static int marshal_out_invoke_req(const uint8_t *buf, uint32_t buf_size,
 					TZHANDLE_GET_SERVER(tz_args->handle),
 				&temp_fd, NO_LOCK);
 
-		if (temp_fd >= 0)
-			args_buf[i].o.fd = temp_fd;
+		args_buf[i].o.fd = temp_fd;
 
 		if (ret)
 			goto out;
@@ -1153,7 +1152,8 @@ static int prepare_send_scm_msg(const uint8_t *in_buf, phys_addr_t in_paddr,
 		    desc.ret[0] == QSEOS_RESULT_BLOCKED_ON_LISTENER) {
 			ret = qseecom_process_listener_from_smcinvoke(&desc);
 			req->result = (int32_t)desc.ret[1];
-			if (!req->result) {
+			if (!req->result &&
+			  desc.ret[0] != SMCINVOKE_RESULT_INBOUND_REQ_NEEDED) {
 				dmac_inv_range(in_buf, in_buf + in_buf_len);
 				ret = marshal_out_invoke_req(in_buf,
 						in_buf_len, req, args_buf);
@@ -1371,8 +1371,7 @@ static int marshal_in_tzcb_req(const struct smcinvoke_cb_txn *cb_txn,
 		ret = get_uhandle_from_tzhandle(tz_args[i].handle, srvr_id,
 					&temp_fd, TAKE_LOCK);
 
-		if (temp_fd >= 0)
-			tmp_arg.o.fd = temp_fd;
+		tmp_arg.o.fd = temp_fd;
 
 		if (ret) {
 			ret = -EINVAL;

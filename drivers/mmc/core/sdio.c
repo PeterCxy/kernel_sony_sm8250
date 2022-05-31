@@ -793,9 +793,8 @@ try_again:
 			/* Retry init sequence, but without R4_18V_PRESENT. */
 			retries = 0;
 			goto try_again;
-		} else {
-			goto remove;
 		}
+		return err;
 	}
 
 	/*
@@ -1086,6 +1085,8 @@ static int mmc_sdio_resume(struct mmc_host *host)
 		else if (host->caps & MMC_CAP_SDIO_IRQ)
 			host->ops->enable_sdio_irq(host, 1);
 	}
+
+	mmc_retune_needed(host);
 
 out:
 	mmc_log_string(host, "Exit err: %d\n", err);

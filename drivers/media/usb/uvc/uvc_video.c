@@ -26,6 +26,8 @@
 
 #include "uvcvideo.h"
 
+#define CONFIG_DMA_NONCOHERENT 1
+
 #ifdef CONFIG_SOMC_UVC_EXTENSION
 static int uvc_init_video_isoc_ext(struct uvc_streaming *stream,
 				struct usb_host_endpoint *ep, gfp_t gfp_flags);

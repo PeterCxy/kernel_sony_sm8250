@@ -886,6 +886,9 @@ struct task_struct {
 #ifdef CONFIG_CGROUP_SCHED
 	struct task_group		*sched_task_group;
 #endif
+#ifdef CONFIG_SCHED_TUNE
+	int				stune_idx;
+#endif
 	struct sched_dl_entity		dl;
 
 #ifdef CONFIG_UCLAMP_TASK
@@ -1341,7 +1344,10 @@ struct task_struct {
 
 	struct tlbflush_unmap_batch	tlb_ubc;
 
-	struct rcu_head			rcu;
+	union {
+		refcount_t		rcu_users;
+		struct rcu_head		rcu;
+	};
 
 	/* Cache last used pipe for splice(): */
 	struct pipe_inode_info		*splice_pipe;
@@ -1475,6 +1481,8 @@ struct task_struct {
 	/* Used by LSM modules for access restriction: */
 	void				*security;
 #endif
+	/* task is frozen/stopped (used by the cgroup freezer) */
+	ANDROID_KABI_USE(1, unsigned frozen:1);
 
 	/*
 	 * New fields for task_struct should be added above here, so that

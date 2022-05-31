@@ -1509,6 +1509,12 @@ mtp_function_bind(struct usb_configuration *c, struct usb_function *f)
 	dev->cdev = cdev;
 	mtp_log("dev: %pK\n", dev);
 
+	/* ChipIdea controller supports 16K request length for IN endpoint */
+	if (cdev->gadget->is_chipidea && mtp_tx_req_len > 16384) {
+		mtp_log("Truncating Tx Req length to 16K for ChipIdea\n");
+		mtp_tx_req_len = 16384;
+	}
+
 	/* allocate interface ID(s) */
 	id = usb_interface_id(c, f);
 	if (id < 0)
@@ -1912,6 +1918,10 @@ struct usb_function_instance *alloc_inst_mtp_ptp(bool mtp_config)
 		return ERR_PTR(-ENOMEM);
 	fi_mtp->func_inst.set_inst_name = mtp_set_inst_name;
 	fi_mtp->func_inst.free_func_inst = mtp_free_inst;
+	if (mtp_config)
+		memcpy(fi_mtp->mtp_ext_compat_id, "MTP", 3);
+	else
+		memcpy(fi_mtp->mtp_ext_compat_id, "PTP", 3);
 
 	fi_mtp->mtp_os_desc.ext_compat_id = fi_mtp->mtp_ext_compat_id;
 	INIT_LIST_HEAD(&fi_mtp->mtp_os_desc.ext_prop);
