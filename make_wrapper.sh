@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$ANDROID_ROOT" ]; then
-  ANDROID_ROOT=$(readlink build/android-root)
+  ANDROID_ROOT=$(readlink -f build/android-root)
 fi
 
 if [ -z "$ANDROID_ROOT" ]; then
