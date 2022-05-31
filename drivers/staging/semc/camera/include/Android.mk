@@ -1,0 +1,18 @@
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE := sony_camera_kernel_headers
+LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_PREBUILT_INT_KERNEL)
+LOCAL_CAMERA_PATH := $(LOCAL_PATH)
+LOCAL_UAPI_OUT := $(PRODUCT_OUT)/obj/vendor/semc/hardware/camera-kernal-module/sony_camera/include
+LOCAL_KERNEL_HEADERS := sony_camera.h
+LOCAL_HEADER_INSTALL_DIR := kernel/msm-$(TARGET_KERNEL_VERSION)/scripts
+LOCAL_BUILD_ROOT_RELATIVE := ../../../../../../../
+GEN := $(addprefix $(LOCAL_UAPI_OUT)/,$(LOCAL_KERNEL_HEADERS))
+$(GEN): $(KERNEL_USR)
+$(GEN): PRIVATE_PATH := $(LOCAL_CAMERA_PATH)
+$(GEN): PRIVATE_CUSTOM_TOOL = $(shell cd $(PRODUCT_OUT)/obj/KERNEL_OBJ; $(LOCAL_BUILD_ROOT_RELATIVE)$(LOCAL_HEADER_INSTALL_DIR)/headers_install.sh $(LOCAL_BUILD_ROOT_RELATIVE)$(dir $@) $(LOCAL_BUILD_ROOT_RELATIVE)$(subst $(LOCAL_UAPI_OUT),$(LOCAL_CAMERA_PATH),$(dir $@)) $(notdir $@))
+$(GEN): $(addprefix $(LOCAL_CAMERA_PATH)/,$(LOCAL_KERNEL_HEADERS))
+	$(transform-generated-source)
+LOCAL_GENERATED_SOURCES := $(GEN)
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_UAPI_OUT)
+include $(BUILD_HEADER_LIBRARY)

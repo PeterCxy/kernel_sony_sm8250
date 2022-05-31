@@ -1,0 +1,8 @@
+#
+# Kernel module make instructions go here.
+#
+
+obj-y += pn553.o
+
+ccflags-y := -DDEBUG
+
